@@ -1,4 +1,8 @@
+using DevConnect.Application;
+using DevConnect.Application.Contracts.Validations;
 using DevConnect.Persistence.DataModels;
+using DevConnect.WebApi.Middlewares;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 
@@ -24,6 +28,10 @@ var mongoClient = new MongoClient(builder.Configuration.GetConnectionString("Mon
 builder.Services.AddDbContext<DevConnectMongoContext>(options =>
     options.UseMongoDB(mongoClient, "devconnect_db"));
 
+builder.Services.AddRepositories();
+
+builder.Services.AddValidatorsFromAssemblyContaining<UserProfileInputModelValidator>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -34,6 +42,8 @@ using (var scope = app.Services.CreateScope())
     var dbContext = scope.ServiceProvider.GetRequiredService<DevConnectDbContext>();
     dbContext.Database.Migrate();
 }
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {

@@ -6,4 +6,19 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Reference Include="Microsoft.Extensions.Configuration.Abstractions">
+        <HintPath>..\..\..\..\..\.nuget\packages\microsoft.extensions.configuration.abstractions\9.0.1\lib\net8.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+      </Reference>
+      <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
+        <HintPath>..\..\..\..\..\.nuget\packages\microsoft.extensions.dependencyinjection.abstractions\9.0.4\lib\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\Persistence\DevConnect.Persistence.Command\DevConnect.Persistence.Command.csproj" />
+      <ProjectReference Include="..\..\..\Persistence\DevConnect.Persistence.Query\DevConnect.Persistence.Query.csproj" />
+      <ProjectReference Include="..\DevConnect.Application.Contracts\DevConnect.Application.Contracts.csproj" />
+    </ItemGroup>
+
 </Project>
