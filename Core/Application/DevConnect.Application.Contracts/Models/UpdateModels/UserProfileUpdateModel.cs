@@ -1,6 +1,6 @@
-namespace DevConnect.Domain.Models;
+namespace DevConnect.Application.Contracts.Models.UpdateModels;
 
-public class UserProfile : BusinessObject
+public class UserProfileUpdateModel
 {
     public string DisplayName { get; set; }
     public string? ProfilePictureUrl { get; set; }
