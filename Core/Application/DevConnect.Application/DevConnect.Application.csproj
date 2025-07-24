@@ -21,4 +21,8 @@
       <ProjectReference Include="..\DevConnect.Application.Contracts\DevConnect.Application.Contracts.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Services\" />
+    </ItemGroup>
+
 </Project>

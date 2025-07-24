@@ -29,6 +29,7 @@ builder.Services.AddDbContext<DevConnectMongoContext>(options =>
     options.UseMongoDB(mongoClient, "devconnect_db"));
 
 builder.Services.AddRepositories();
+builder.Services.AddMappers();
 
 builder.Services.AddValidatorsFromAssemblyContaining<UserProfileInputModelValidator>();
 
