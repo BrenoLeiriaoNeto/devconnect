@@ -1,4 +1,5 @@
 using DevConnect.Application.Contracts.Models.InputModels;
+using DevConnect.Application.Contracts.Models.UpdateModels;
 using DevConnect.Application.Contracts.Models.ViewModels;
 using DevConnect.Application.Mapping.Interfaces;
 using DevConnect.Domain.Models;
@@ -15,6 +16,17 @@ public class UserProfileMapper : IUserProfileMapper
             ProfilePictureUrl = input.ProfilePictureUrl,
             Bio = input.Bio,
             Location = input.Location,
+        };
+    }
+    
+    public UserProfile ToDomain(UserProfileUpdateModel update)
+    {
+        return new UserProfile
+        {
+            DisplayName = update.DisplayName,
+            ProfilePictureUrl = update.ProfilePictureUrl,
+            Bio = update.Bio,
+            Location = update.Location,
         };
     }
 

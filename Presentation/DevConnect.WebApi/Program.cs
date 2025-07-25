@@ -1,10 +1,12 @@
 using DevConnect.Application;
+using DevConnect.Application.Behaviors;
 using DevConnect.Application.Contracts.Validations;
+using DevConnect.Application.Services.Handlers;
 using DevConnect.Persistence.DataModels;
 using DevConnect.WebApi.Middlewares;
 using FluentValidation;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
-using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,20 +20,16 @@ builder.Services.AddCors(options =>
     });
 });
 
-var psqlClient = builder.Configuration.GetConnectionString("PostgresDb");
-
-builder.Services.AddDbContext<DevConnectDbContext>(options =>
-    options.UseNpgsql(psqlClient));
-
-var mongoClient = new MongoClient(builder.Configuration.GetConnectionString("MongoDb"));
-
-builder.Services.AddDbContext<DevConnectMongoContext>(options =>
-    options.UseMongoDB(mongoClient, "devconnect_db"));
+builder.Services.AddDbContexts(builder.Configuration);
 
 builder.Services.AddRepositories();
-builder.Services.AddMappers();
-
 builder.Services.AddValidatorsFromAssemblyContaining<UserProfileInputModelValidator>();
+builder.Services.AddMappers();
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssemblyContaining<CreateUserProfileHandler>();
+});
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
