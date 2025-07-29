@@ -13,9 +13,9 @@ public class UserProfileQueryRepository : IUserProfileQueryRepository
     {
         _psqlContext = psqlContext;
     }
-    public async Task<UserProfile?> GetByIdAsync(Guid id)
+    public async Task<UserProfile?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return await _psqlContext.UserProfiles
-            .FirstOrDefaultAsync(u => u.Id == id);
+            .FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
     }
 }

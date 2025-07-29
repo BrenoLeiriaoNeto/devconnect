@@ -4,6 +4,6 @@ namespace DevConnect.Application.Contracts.Interfaces.Command;
 
 public interface IUserProfileCommandRepository
 {
-    Task UpdateUserAsync(UserProfile userProfile);
-    Task AddUserAsync(UserProfile userProfile);
+    Task UpdateUserAsync(UserProfile userProfile, CancellationToken cancellationToken);
+    Task AddUserAsync(UserProfile userProfile, CancellationToken cancellationToken);
 }

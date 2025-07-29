@@ -5,21 +5,16 @@ using MediatR;
 
 namespace DevConnect.Application.Services.Handlers;
 
-public class CreateUserProfileHandler : IRequestHandler<CreateUserProfileCommand>
+public class CreateUserProfileHandler(
+    IUserProfileCommandRepository userProfileCommandRepository,
+    IUserProfileMapper userProfileMapper)
+    : IRequestHandler<CreateUserProfileCommand>
 {
-    private readonly IUserProfileCommandRepository _userProfileCommandRepository;
-    private readonly IUserProfileMapper _userProfileMapper;
-
-    public CreateUserProfileHandler(IUserProfileCommandRepository userProfileCommandRepository,
-        IUserProfileMapper userProfileMapper)
-    {
-        _userProfileCommandRepository = userProfileCommandRepository;
-        _userProfileMapper = userProfileMapper;
-    }
-    
     public async Task Handle(CreateUserProfileCommand request, CancellationToken cancellationToken)
     {
-        var userProfile = _userProfileMapper.ToDomain(request.Input);
-        await _userProfileCommandRepository.AddUserAsync(userProfile);
+        var userProfile = userProfileMapper.ToDomain(request.Input);
+        userProfile.CreatedAt = DateTime.UtcNow;
+        userProfile.CreatedBy = "Test User";
+        await userProfileCommandRepository.AddUserAsync(userProfile, cancellationToken);
     }
 }

@@ -7,27 +7,20 @@ using MediatR;
 
 namespace DevConnect.Application.Services.Handlers;
 
-public class GetUserByIdHandler : IRequestHandler<GetUserByIdQuery, UserProfileViewModel>
+public class GetUserByIdHandler(
+    IUserProfileQueryRepository userProfileQueryRepository,
+    IUserProfileMapper userProfileMapper)
+    : IRequestHandler<GetUserByIdQuery, UserProfileViewModel>
 {
-    private readonly IUserProfileQueryRepository _userProfileQueryRepository;
-    private readonly IUserProfileMapper _userProfileMapper;
-
-    public GetUserByIdHandler(IUserProfileQueryRepository userProfileQueryRepository, 
-        IUserProfileMapper userProfileMapper)
-    {
-        _userProfileQueryRepository = userProfileQueryRepository;
-        _userProfileMapper = userProfileMapper;
-    }
-    
     public async Task<UserProfileViewModel> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
     {
-        var user = await _userProfileQueryRepository.GetByIdAsync(request.UserId);
+        var user = await userProfileQueryRepository.GetByIdAsync(request.UserId, cancellationToken);
         if (user is null)
         {
             throw new EntityNotFoundException($"User with ID '{request.UserId}' not found.");
         }
         
-        var userViewModel = _userProfileMapper.ToViewModel(user);
+        var userViewModel = userProfileMapper.ToViewModel(user);
 
         return userViewModel;
     }

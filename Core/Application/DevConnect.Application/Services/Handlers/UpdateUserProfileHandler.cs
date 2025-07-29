@@ -5,19 +5,17 @@ using MediatR;
 
 namespace DevConnect.Application.Services.Handlers;
 
-public class UpdateUserProfileHandler : IRequestHandler<UpdateUserProfileCommand>
+public class UpdateUserProfileHandler(
+    IUserProfileCommandRepository userProfileCommandRepository,
+    IUserProfileMapper userProfileMapper)
+    : IRequestHandler<UpdateUserProfileCommand>
 {
-    private readonly IUserProfileCommandRepository _userProfileCommandRepository;
-    private readonly IUserProfileMapper _userProfileMapper;
-
-    public UpdateUserProfileHandler(IUserProfileCommandRepository userProfileCommandRepository)
-    {
-        _userProfileCommandRepository = userProfileCommandRepository;
-    }
-    
     public async Task Handle(UpdateUserProfileCommand request, CancellationToken cancellationToken)
     {
-        var userProfile = _userProfileMapper.ToDomain(request.Update);
-        await _userProfileCommandRepository.UpdateUserAsync(userProfile);
+        if (request.Id != request.Update.Id)
+            throw new ArgumentException("User ID in path and body must match.");
+        
+        var userProfile = userProfileMapper.ToDomain(request.Update);
+        await userProfileCommandRepository.UpdateUserAsync(userProfile, cancellationToken);
     }
 }
