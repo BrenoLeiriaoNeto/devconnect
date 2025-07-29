@@ -13,14 +13,14 @@ public class MessageQueryRepository : IMessageQueryRepository
     {
         _mongoContext = context;
     }
-    public async Task<IEnumerable<Message>> GetMessagesForUserAsync(Guid userId)
+    public async Task<IEnumerable<Message>> GetMessagesForUserAsync(Guid userId, CancellationToken cancellationToken)
     {
         IQueryable<Message> query = _mongoContext.Messages
             .Where(m => m.SenderId == userId || m.ReceiverId == userId);
 
         var messages = await query
             .OrderBy(m => m.SentAt)
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 
         return messages;
     }

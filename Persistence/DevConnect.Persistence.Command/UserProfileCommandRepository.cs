@@ -13,15 +13,15 @@ public class UserProfileCommandRepository : IUserProfileCommandRepository
         _psqlContext = psqlContext;
     }
     
-    public async Task UpdateUserAsync(UserProfile userProfile)
+    public async Task UpdateUserAsync(UserProfile userProfile, CancellationToken cancellationToken)
     {
         _psqlContext.UserProfiles.Update(userProfile);
-        await _psqlContext.SaveChangesAsync();
+        await _psqlContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task AddUserAsync(UserProfile userProfile)
+    public async Task AddUserAsync(UserProfile userProfile, CancellationToken cancellationToken)
     {
-        await _psqlContext.UserProfiles.AddAsync(userProfile);
-        await _psqlContext.SaveChangesAsync();
+        await _psqlContext.UserProfiles.AddAsync(userProfile, cancellationToken);
+        await _psqlContext.SaveChangesAsync(cancellationToken);
     }
 }

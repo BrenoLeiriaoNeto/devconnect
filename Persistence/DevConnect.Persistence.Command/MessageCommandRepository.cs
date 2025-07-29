@@ -13,9 +13,9 @@ public class MessageCommandRepository : IMessageCommandRepository
     {
         _context = context;
     }
-    public async Task AddMessageAsync(Message message)
+    public async Task AddMessageAsync(Message message, CancellationToken cancellationToken)
     {
-        await _context.Messages.AddAsync(message);
-        await _context.SaveChangesAsync();
+        await _context.Messages.AddAsync(message, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
     }
 }

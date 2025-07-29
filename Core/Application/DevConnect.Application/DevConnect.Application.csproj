@@ -18,7 +18,12 @@
     <ItemGroup>
       <ProjectReference Include="..\..\..\Persistence\DevConnect.Persistence.Command\DevConnect.Persistence.Command.csproj" />
       <ProjectReference Include="..\..\..\Persistence\DevConnect.Persistence.Query\DevConnect.Persistence.Query.csproj" />
+      <ProjectReference Include="..\..\Shared\DevConnect.Exceptions\DevConnect.Exceptions.csproj" />
       <ProjectReference Include="..\DevConnect.Application.Contracts\DevConnect.Application.Contracts.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MediatR" Version="13.0.0" />
     </ItemGroup>
 
 </Project>

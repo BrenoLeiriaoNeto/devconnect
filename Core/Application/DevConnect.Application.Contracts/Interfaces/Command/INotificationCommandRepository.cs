@@ -4,6 +4,6 @@ namespace DevConnect.Application.Contracts.Interfaces.Command;
 
 public interface INotificationCommandRepository
 {
-    Task MarkAsReadAsync(Guid notificationId);
-    Task AddNotificationAsync(Notification notification);
+    Task MarkAsReadAsync(Guid notificationId, CancellationToken cancellationToken);
+    Task AddNotificationAsync(Notification notification, CancellationToken cancellationToken);
 }
