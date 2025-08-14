@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Polly" Version="8.6.2" />
+      <PackageReference Include="RabbitMQ.Client" Version="6.2.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="MailKit">
+        <HintPath>..\..\..\..\.nuget\packages\mailkit\4.13.0\lib\net8.0\MailKit.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Core\Application\DevConnect.Application.Contracts\DevConnect.Application.Contracts.csproj" />
+      <ProjectReference Include="..\DevConnect.Infrastructure.Subscriber\DevConnect.Infrastructure.Subscriber.csproj" />
+    </ItemGroup>
+
+</Project>

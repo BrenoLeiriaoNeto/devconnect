@@ -22,7 +22,7 @@ public class UserProfileConfiguration : IEntityTypeConfiguration<UserProfile>
         builder.Property(p => p.Location)
             .HasMaxLength(255);
         builder.Property(p => p.CreatedAt)
-            .IsRequired();
+            .HasMaxLength(150);
         builder.Property(p => p.ModifiedAt);
         builder.Property(p => p.DeletedAt);
     }

@@ -48,6 +48,7 @@ public class ExceptionHandlingMiddleware
         {
             ArgumentNullException => StatusCodes.Status400BadRequest,
             EntityNotFoundException => StatusCodes.Status404NotFound,
+            UserNotFoundException => StatusCodes.Status404NotFound,
             DomainValidationException => StatusCodes.Status422UnprocessableEntity,
             DuplicateEntityException => StatusCodes.Status409Conflict,
             UnauthorizedAccessException => StatusCodes.Status401Unauthorized,

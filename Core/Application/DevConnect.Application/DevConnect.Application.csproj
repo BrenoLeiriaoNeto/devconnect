@@ -16,14 +16,23 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\Infrastructure\DevConnect.Infrastructure.Mailing\DevConnect.Infrastructure.Mailing.csproj" />
+      <ProjectReference Include="..\..\..\Infrastructure\DevConnect.Infrastructure.Publisher\DevConnect.Infrastructure.Publisher.csproj" />
+      <ProjectReference Include="..\..\..\Infrastructure\DevConnect.Infrastructure.Subscriber\DevConnect.Infrastructure.Subscriber.csproj" />
       <ProjectReference Include="..\..\..\Persistence\DevConnect.Persistence.Command\DevConnect.Persistence.Command.csproj" />
       <ProjectReference Include="..\..\..\Persistence\DevConnect.Persistence.Query\DevConnect.Persistence.Query.csproj" />
       <ProjectReference Include="..\..\Shared\DevConnect.Exceptions\DevConnect.Exceptions.csproj" />
       <ProjectReference Include="..\DevConnect.Application.Contracts\DevConnect.Application.Contracts.csproj" />
+      <ProjectReference Include="..\..\..\Infrastructure\DevConnect.Infrastructure.PasswordHash\DevConnect.Infrastructure.PasswordHash.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="MediatR" Version="13.0.0" />
+      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.13.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Services\Auth\Queries\" />
     </ItemGroup>
 
 </Project>

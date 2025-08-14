@@ -4,6 +4,9 @@ namespace DevConnect.Application.Contracts.Interfaces.Command;
 
 public interface IUserAuthCommandRepository
 {
-    Task AddAsync(UserAuth userAuth, CancellationToken cancellationToken);
-    Task<bool> ExistsAsync(string email, CancellationToken cancellationToken);
+    Task AddUserAuthAsync(UserAuth userAuth, CancellationToken cancellationToken);
+    Task UpdateUserAuthAsync(UserAuth userAuth, CancellationToken cancellationToken);
+    Task<bool> EmailExistsAsync(string email, CancellationToken cancellationToken);
+    Task<bool> UsernameExistsAsync(string username, CancellationToken cancellationToken);
+    Task<bool> VerifyEmailAsync(Guid userId, CancellationToken cancellationToken);
 }

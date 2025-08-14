@@ -7,7 +7,7 @@ namespace DevConnect.Application.Mapping.Interfaces;
 
 public interface IUserProfileMapper
 {
-    UserProfile ToDomain(UserProfileInputModel input);
+    UserProfile ToDomain(string displayName);
     UserProfile ToDomain(UserProfileUpdateModel update);
     UserProfileViewModel ToViewModel(UserProfile domain);
 }
