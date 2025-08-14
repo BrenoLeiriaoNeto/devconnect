@@ -11,6 +11,8 @@ public class DevConnectDbContext : DbContext
 
     public DbSet<UserProfile> UserProfiles => Set<UserProfile>();
     public DbSet<UserAuth> UserAuths => Set<UserAuth>();
+    public DbSet<Role> Roles => Set<Role>();
+    public DbSet<VerificationResendMetadata> VerificationResendLogs => Set<VerificationResendMetadata>();
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

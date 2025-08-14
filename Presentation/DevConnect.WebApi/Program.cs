@@ -1,14 +1,27 @@
 using DevConnect.Application;
 using DevConnect.Application.Behaviors;
 using DevConnect.Application.Contracts.Validations;
+using DevConnect.Application.Services.Auth.Handlers;
 using DevConnect.Application.Services.Handlers;
+using DevConnect.Application.Services.Infra.Handlers;
 using DevConnect.Persistence.DataModels;
 using DevConnect.WebApi.Middlewares;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+DotNetEnv.Env.Load();
+    
+Log.Logger = new LoggerConfiguration()
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .WriteTo.File("logs/devconnect.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+builder.Host.UseSerilog();
 
 builder.Services.AddCors(options =>
 {
@@ -22,12 +35,17 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddDbContexts(builder.Configuration);
 
+builder.Services.AddJwtAuthentication(builder.Configuration);
+
 builder.Services.AddRepositories();
+builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddValidatorsFromAssemblyContaining<UserProfileInputModelValidator>();
 builder.Services.AddMappers();
 builder.Services.AddMediatR(cfg =>
 {
-    cfg.RegisterServicesFromAssemblyContaining<CreateUserProfileHandler>();
+    cfg.RegisterServicesFromAssemblyContaining<LoginUserCommandHandler>();
+    cfg.RegisterServicesFromAssemblyContaining<UpdateUserProfileHandler>();
+    cfg.RegisterServicesFromAssemblyContaining<EmailVerificationCommandHandler>();
 });
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
@@ -44,6 +62,8 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
+app.UseAuthentication();
+app.UseAuthorization();
 
 if (app.Environment.IsDevelopment())
 {

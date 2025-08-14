@@ -20,17 +20,6 @@ public class UserProfileController(IMediator mediator) : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> CreateUserProfile([FromBody] CreateUserProfileCommand command,
-        CancellationToken cancellationToken)
-    {
-        await mediator.Send(command, cancellationToken);
-        return Created();
-    }
-
     [HttpPut("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

@@ -8,14 +8,11 @@ namespace DevConnect.Application.Mapping;
 
 public class UserProfileMapper : IUserProfileMapper
 {
-    public UserProfile ToDomain(UserProfileInputModel input)
+    public UserProfile ToDomain(string displayName)
     {
         return new UserProfile
         {
-            DisplayName = input.DisplayName,
-            ProfilePictureUrl = input.ProfilePictureUrl,
-            Bio = input.Bio,
-            Location = input.Location,
+            DisplayName = displayName
         };
     }
     
