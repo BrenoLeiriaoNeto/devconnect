@@ -33,12 +33,12 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddDbContexts(builder.Configuration);
+builder.Services.AddDbContexts();
 
 builder.Services.AddJwtAuthentication(builder.Configuration);
 
 builder.Services.AddRepositories();
-builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.AddInfrastructureServices();
 builder.Services.AddValidatorsFromAssemblyContaining<UserProfileInputModelValidator>();
 builder.Services.AddMappers();
 builder.Services.AddMediatR(cfg =>

@@ -9,7 +9,6 @@ using DevConnect.Application.Mapping.Interfaces;
 using DevConnect.Application.Services.Auth.Commands;
 using DevConnect.Exceptions;
 using MediatR;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
@@ -21,7 +20,6 @@ public class ResendVerificationEmailCommandHandler(
     IVerificationResendCommandRepository verificationResendCommandRepository,
     IVerificationResendMapper mapper,
     IMessagePublisher messagePublisher,
-    IConfiguration configuration,
     ILogger<ResendVerificationEmailCommandHandler> logger
     ) : IRequestHandler<ResendVerificationEmailCommand>
 {
@@ -55,7 +53,7 @@ public class ResendVerificationEmailCommandHandler(
             await verificationResendCommandRepository.UpdateVerificationResendAsync(metadata, cancellationToken);
         }
 
-        var token = GenerateVerificationToken(user.Id, configuration);
+        var token = GenerateVerificationToken(user.Id);
 
         var message = new EmailVerificationMessageModel { VerificationToken = token };
         
@@ -63,10 +61,10 @@ public class ResendVerificationEmailCommandHandler(
         
         logger.LogInformation("Verification email resent to {Email}", user.Email);
     }
-    private string GenerateVerificationToken(Guid userId, IConfiguration configuration)
+    private string GenerateVerificationToken(Guid userId)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.UTF8.GetBytes(configuration["Jwt:Secret"]);
+        var key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET"));
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
@@ -74,8 +72,8 @@ public class ResendVerificationEmailCommandHandler(
                 new Claim(JwtRegisteredClaimNames.Sub, userId.ToString())
             ]),
             Expires = DateTime.UtcNow.AddHours(24),
-            Issuer = configuration["Jwt:Issuer"],
-            Audience = configuration["Jwt:Audience"],
+            Issuer = Environment.GetEnvironmentVariable("JWT_ISSUER"),
+            Audience = Environment.GetEnvironmentVariable("JWT_AUDIENCE"),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
                 SecurityAlgorithms.HmacSha256Signature)
         };

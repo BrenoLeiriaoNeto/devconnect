@@ -17,6 +17,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\Infrastructure\DevConnect.Infrastructure.Mailing\DevConnect.Infrastructure.Mailing.csproj" />
+      <ProjectReference Include="..\..\..\Infrastructure\DevConnect.Infrastructure.Models\DevConnect.Infrastructure.Models.csproj" />
       <ProjectReference Include="..\..\..\Infrastructure\DevConnect.Infrastructure.Publisher\DevConnect.Infrastructure.Publisher.csproj" />
       <ProjectReference Include="..\..\..\Infrastructure\DevConnect.Infrastructure.Subscriber\DevConnect.Infrastructure.Subscriber.csproj" />
       <ProjectReference Include="..\..\..\Persistence\DevConnect.Persistence.Command\DevConnect.Persistence.Command.csproj" />

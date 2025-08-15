@@ -19,6 +19,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Core\Application\DevConnect.Application.Contracts\DevConnect.Application.Contracts.csproj" />
+      <ProjectReference Include="..\DevConnect.Infrastructure.Models\DevConnect.Infrastructure.Models.csproj" />
     </ItemGroup>
 
 </Project>

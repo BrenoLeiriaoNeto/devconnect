@@ -8,10 +8,17 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Core\Application\DevConnect.Application.Contracts\DevConnect.Application.Contracts.csproj" />
+      <ProjectReference Include="..\DevConnect.Infrastructure.Models\DevConnect.Infrastructure.Models.csproj" />
+      <ProjectReference Include="..\DevConnect.Infrastructure.Resilience\DevConnect.Infrastructure.Resilience.csproj" />
+      <ProjectReference Include="..\DevConnect.Infrastructure.Subscriber\DevConnect.Infrastructure.Subscriber.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="RabbitMQ.Client" Version="6.2.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Models\" />
     </ItemGroup>
 
 </Project>

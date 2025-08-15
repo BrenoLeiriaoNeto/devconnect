@@ -49,6 +49,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevConnect.Infrastructure.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevConnect.Infrastructure.Resilience", "Infrastructure\DevConnect.Infrastructure.Resilience\DevConnect.Infrastructure.Resilience.csproj", "{FF81DFFB-3746-411B-9FF3-91F419AFE519}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevConnect.Infrastructure.Models", "Infrastructure\DevConnect.Infrastructure.Models\DevConnect.Infrastructure.Models.csproj", "{4C3BB935-5393-477C-965C-2BCA632D4EDA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,6 +113,10 @@ Global
 		{FF81DFFB-3746-411B-9FF3-91F419AFE519}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF81DFFB-3746-411B-9FF3-91F419AFE519}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF81DFFB-3746-411B-9FF3-91F419AFE519}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C3BB935-5393-477C-965C-2BCA632D4EDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C3BB935-5393-477C-965C-2BCA632D4EDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C3BB935-5393-477C-965C-2BCA632D4EDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C3BB935-5393-477C-965C-2BCA632D4EDA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{CFFDD83C-9886-4E8A-983A-EC8475BF5F9B} = {B0D92BD0-8E19-45D3-BA73-590D09ADF887}
@@ -130,5 +136,6 @@ Global
 		{6F69DE20-7D2F-4DC0-977D-7605874993F1} = {85DAFB29-F7A0-4652-B942-7E012CC98475}
 		{9D51B0A8-BC1F-4559-B3EA-716A34C878D3} = {85DAFB29-F7A0-4652-B942-7E012CC98475}
 		{FF81DFFB-3746-411B-9FF3-91F419AFE519} = {85DAFB29-F7A0-4652-B942-7E012CC98475}
+		{4C3BB935-5393-477C-965C-2BCA632D4EDA} = {85DAFB29-F7A0-4652-B942-7E012CC98475}
 	EndGlobalSection
 EndGlobal
