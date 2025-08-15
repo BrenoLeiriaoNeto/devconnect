@@ -5,15 +5,13 @@ using DevConnect.Application.Contracts.Interfaces.Command;
 using DevConnect.Application.Services.Infra.Commands;
 using DevConnect.Exceptions;
 using MediatR;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 namespace DevConnect.Application.Services.Infra.Handlers;
 
 public class EmailVerificationCommandHandler(
-    ILogger<EmailVerificationCommandHandler> logger, 
-    IConfiguration configuration,
+    ILogger<EmailVerificationCommandHandler> logger,
     IUserAuthCommandRepository commandRepository
     ) : IRequestHandler<EmailVerificationCommand, bool>
 {
@@ -25,7 +23,7 @@ public class EmailVerificationCommandHandler(
         }
         
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.UTF8.GetBytes(configuration["Jwt:Secret"]);
+        var key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET"));
 
         var parameters = new TokenValidationParameters
         {
@@ -33,8 +31,8 @@ public class EmailVerificationCommandHandler(
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = configuration["Jwt:Issuer"],
-            ValidAudience = configuration["Jwt:Audience"],
+            ValidIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER"),
+            ValidAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE"),
             IssuerSigningKey = new SymmetricSecurityKey(key),
             ClockSkew = TimeSpan.Zero
         };

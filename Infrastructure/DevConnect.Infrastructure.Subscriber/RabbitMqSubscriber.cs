@@ -3,9 +3,10 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
 using DevConnect.Application.Contracts.Interfaces.Common;
+using DevConnect.Infrastructure.Models;
 using DevConnect.Infrastructure.Subscriber.Interfaces;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 namespace DevConnect.Infrastructure.Subscriber;
 
@@ -13,39 +14,49 @@ public class RabbitMqSubscriber : BackgroundService
 {
     private readonly ILogger<RabbitMqSubscriber> _logger;
     private readonly IRabbitMqConnectionFactory _connectionFactory;
+    private readonly RabbitMqSettingsModel _settings;
     private readonly IMessageHandler _messageHandler;
-    private readonly IConfiguration _configuration;
     private IConnection _connection;
     private IModel _channel;
-    private string _queueName;
 
     public RabbitMqSubscriber(
         ILogger<RabbitMqSubscriber> logger,
         IRabbitMqConnectionFactory connectionFactory,
-        IMessageHandler messageHandler,
-        IConfiguration configuration)
+        IOptions<RabbitMqSettingsModel> options,
+        IMessageHandler messageHandler)
     {
         _logger = logger;
         _connectionFactory = connectionFactory;
+        _settings = options.Value;
         _messageHandler = messageHandler;
-        _configuration = configuration;
     }
 
     private async Task InitializeRabbitMqAsync()
     {
-        _queueName = _configuration["RabbitMQ:QueueName"];
         _connection = await _connectionFactory.CreateConnectionAsync();
         _channel = _connection.CreateModel();
+        
+        _channel.ExchangeDeclare(
+            _settings.ExchangeName,
+            _settings.ExchangeType, 
+            durable: true);
 
         _channel.QueueDeclare(
-            queue: _queueName,
+            queue: _settings.QueueName,
             durable: true,
             exclusive: false,
             autoDelete: false,
             arguments: null
         );
         
-        _logger.LogInformation("RabbitMqSubscriber initialized");
+        _channel.QueueBind(
+            queue: _settings.QueueName,
+            exchange: _settings.ExchangeName,
+            routingKey: _settings.RoutingKey
+            );
+        
+        _logger.LogInformation("RabbitMqSubscriber initialized and bound to exchange {Exchange}",
+            _settings.ExchangeName);
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -64,7 +75,7 @@ public class RabbitMqSubscriber : BackgroundService
             };
 
             _channel.BasicConsume(
-                queue: _queueName,
+                queue: _settings.QueueName,
                 autoAck: true,
                 consumer: consumer
             );

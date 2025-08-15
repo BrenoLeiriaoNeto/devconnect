@@ -4,16 +4,15 @@ using System.Security.Cryptography;
 using System.Text;
 using DevConnect.Application.Services.Auth.Models;
 using DevConnect.Domain.Models;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace DevConnect.Application.Services.Auth.Helpers;
 
-public class JwtGenerator(IConfiguration configuration)
+public class JwtGenerator()
 {
     public JwtTokenResult GenerateJwt(UserAuth userAuth)
     {
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Secret"]));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET")));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var claims = new List<Claim>
@@ -29,8 +28,8 @@ public class JwtGenerator(IConfiguration configuration)
         var expiry = DateTime.UtcNow.AddMinutes(30);
         
         var token = new JwtSecurityToken(
-            issuer: configuration["Jwt:Issuer"],
-            audience: configuration["Jwt:Audience"],
+            issuer: Environment.GetEnvironmentVariable("JWT_ISSUER"),
+            audience: Environment.GetEnvironmentVariable("JWT_AUDIENCE"),
             claims: claims,
             expires: expiry,
             signingCredentials: credentials);

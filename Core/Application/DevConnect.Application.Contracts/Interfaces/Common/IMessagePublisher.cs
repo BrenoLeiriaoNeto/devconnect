@@ -1,4 +1,3 @@
-using DevConnect.Domain.Models;
 
 namespace DevConnect.Application.Contracts.Interfaces.Common;
 

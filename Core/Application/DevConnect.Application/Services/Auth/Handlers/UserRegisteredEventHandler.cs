@@ -4,14 +4,12 @@ using System.Text;
 using DevConnect.Application.Contracts.Interfaces.Common;
 using DevConnect.Application.Services.Auth.Events;
 using MediatR;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 namespace DevConnect.Application.Services.Auth.Handlers;
 
 public class UserRegisteredEventHandler(
-    IConfiguration configuration,
     IEmailSender emailSender,
     ILogger<UserRegisteredEventHandler> logger
     ) : INotificationHandler<UserRegisteredEvent>
@@ -19,7 +17,7 @@ public class UserRegisteredEventHandler(
     public async Task Handle(UserRegisteredEvent notification, CancellationToken cancellationToken)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.UTF8.GetBytes(configuration["Jwt:Secret"]);
+        var key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET"));
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
@@ -27,8 +25,8 @@ public class UserRegisteredEventHandler(
                 new Claim(JwtRegisteredClaimNames.Sub, notification.UserId.ToString())
             ]),
             Expires = DateTime.UtcNow.AddHours(24),
-            Issuer = configuration["Jwt:Issuer"],
-            Audience = configuration["Jwt:Audience"],
+            Issuer = Environment.GetEnvironmentVariable("JWT_ISSUER"),
+            Audience = Environment.GetEnvironmentVariable("JWT_AUDIENCE"),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
                 SecurityAlgorithms.HmacSha256Signature)
         };
@@ -36,7 +34,7 @@ public class UserRegisteredEventHandler(
         var token = tokenHandler.CreateToken(tokenDescriptor);
         var verificationToken = tokenHandler.WriteToken(token);
 
-        var baseUrl = configuration["App:BaseUrl"];
+        var baseUrl = Environment.GetEnvironmentVariable("APP_URL");
         var verificationLink = $"{baseUrl}/api/auth/verify-email?token={verificationToken}";
 
         await emailSender.SendEmailAsync(notification.Email,
